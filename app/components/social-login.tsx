@@ -3,8 +3,7 @@ import Link from "next/link";
 
 export default function SocialLogin() {
   return (
-    <>
-      <div className="h-px w-full bg-neutral-500" />
+    <> 
       <div className="flex flex-col gap-3">
         <Link
           className="primary-btn flex h-10 items-center justify-center gap-2"
