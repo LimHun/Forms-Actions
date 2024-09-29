@@ -2,17 +2,15 @@
 
 import { useFormStatus } from "react-dom"
 
-interface FormButtonProps {
+interface ButtonProps {
   text: string
 }
 
-export default function FormButton({ text }: FormButtonProps) {
+export default function Button({ text }: ButtonProps) {
   const { pending } = useFormStatus()
   return (
-    <div className="flex flex-col gap-4">
-      <button disabled={pending} className="bg-gray-200 rounded-full primary-btn h-14 disabled:cursor-not-allowed disabled:bg-neutral-300 text-black font-medium">
-        {pending ? "loading..." : text}
-      </button> 
-    </div>
+    <button disabled={pending} className="primary-btn h-10 disabled:cursor-not-allowed disabled:bg-neutral-300">
+      {pending ? "로딩 중" : text}
+    </button>
   )
 }
