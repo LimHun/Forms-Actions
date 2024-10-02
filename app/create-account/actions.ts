@@ -2,7 +2,10 @@
 
 import { z } from "zod"
 import bcrypt from "bcrypt"
+import { getIronSession } from "iron-session"
+import { cookies } from "next/headers"
 import { PrismaClient } from "@prisma/client"
+import { redirect } from "next/navigation"
 import { PASSWORD_MIN_LENGTH, PASSWORD_REGEX, PASSWORD_REGEX_ERROR } from "@/lib/constants"
 
 const db = new PrismaClient()
@@ -55,6 +58,7 @@ const formSchema = z
     }
   })
 
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 export async function createAccount(prevState: any, formData: FormData) {
   const data = {
     username: formData.get("username"),
@@ -86,5 +90,16 @@ export async function createAccount(prevState: any, formData: FormData) {
         id: true,
       },
     })
+    console.log(user)
+
+    const cookie = await getIronSession(cookies(), {
+      cookieName: "delicious-karrot",
+      password: process.env.COOKIE_PASSWORD!,
+    })
+    // @ts-ignore
+    cookie.id = user.id
+    await cookie.save()
+
+    redirect("/profile")
   }
 }
