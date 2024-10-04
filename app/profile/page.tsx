@@ -1,25 +1,6 @@
-import db from "@/lib/db"
 import getSession from "@/lib/session"
 import { redirect } from "next/navigation"
-
-async function getUser() {
-  const session = await getSession()
-  if (session.id) {
-    const user = await db.user.findUnique({
-      where: {
-        id: session.id,
-      },
-      select: {
-        username: true,
-        id: true,
-        email: true,
-      },
-    })
-    if (user) {
-      return user
-    }
-  }
-}
+import { getUser } from "@/actions"
 
 export default async function Profile() {
   const user = await getUser()
