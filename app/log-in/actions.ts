@@ -27,7 +27,6 @@ const formSchema = z.object({
   password: z.string().min(PASSWORD_MIN_LENGTH).regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
 })
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 export async function login(prevState: any, formData: FormData) {
   const data = {
     email: formData.get("email"),
@@ -58,7 +57,7 @@ export async function login(prevState: any, formData: FormData) {
       const session = await getSession()
       session.id = user!.id
       await session.save()
-      redirect("/profile")
+      redirect("/")
     } else {
       return {
         fieldErrors: {

@@ -11,7 +11,7 @@ export default function Button({ text }: ButtonProps) {
   return (
     <button
       disabled={pending}
-      className="primary-btn h-10 rounded-md bg-blue-400 font-medium text-white disabled:cursor-not-allowed disabled:bg-neutral-300"
+      className="max-w-screen-md rounded-lg bg-gradient-to-r from-cyan-300 to-blue-500 px-8 py-4 pl-10 font-semibold text-white shadow-lg hover:opacity-90"
     >
       {pending ? "로딩 중" : text}
     </button>

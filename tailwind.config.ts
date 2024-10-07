@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss";
+import type { Config } from "tailwindcss"
 
 const config: Config = {
   content: [
@@ -12,8 +12,23 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      keyframes: {
+        "morphing-gradient": {
+          "0%": { "background-position": "0% 50%" },
+          "25%": { "background-position": "50% 100%" },
+          "50%": { "background-position": "100% 50%" },
+          "75%": { "background-position": "50% 0%" },
+          "100%": { "background-position": "0% 50%" },
+        },
+      },
+      animation: {
+        "morphing-gradient": "morphing-gradient 15s ease infinite",
+      },
+      backgroundSize: {
+        "400%": "400% 400%",
+      },
     },
   },
   plugins: [],
-};
-export default config;
+}
+export default config

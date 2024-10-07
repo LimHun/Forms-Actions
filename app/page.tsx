@@ -1,33 +1,18 @@
 import Link from "next/link"
-import { getUser } from "./actions"
+import { getTweet, getUser } from "./actions"
 import getSession from "./lib/session"
 import { redirect } from "next/navigation"
-import db from "./lib/db"
 import { Prisma } from "@prisma/client"
 import TweetList from "./components/tweet-list"
+import { FIRST_PAGE, PAGE_SIZE } from "./lib/constants"
+import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/solid"
+import AddTweetButton from "./components/add-tweet-btn"
+import { RootLogin } from "./components/rootLogin"
 
-async function getInitialTweet() {
-  const products = await db.tweet.findMany({
-    select: {
-      id: true,
-      tweet: true,
-      user: true,
-      userId: true,
-      likes: true,
-      createdAt: true,
-    },
-    take: 1,
-    orderBy: {
-      createdAt: "desc",
-    },
-  })
-  return products
-}
-
-export type InitialTweet = Prisma.PromiseReturnType<typeof getInitialTweet>
+export type InitialTweet = Prisma.PromiseReturnType<typeof getTweet>
 
 export default async function RootView() {
-  const items = await getInitialTweet()
+  const items = await getTweet(FIRST_PAGE, PAGE_SIZE)
   const user = await getUser()
   const logout = async () => {
     "use server"
@@ -36,32 +21,24 @@ export default async function RootView() {
     redirect("/")
   }
   return (
-    <div>
+    <div className="">
       {user ? (
-        <div>
-          <div>
-            <TweetList initialTweet={items} />
+        <div className="min-h-screen animate-morphing-gradient bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900 via-cyan-800 via-gray-600 via-sky-600 via-teal-700 to-blue-900 bg-[length:400%_400%]">
+          <div className="flex flex-row justify-between *:mt-6">
+            <span className="ml-6 text-2xl font-bold shadow-red-50">Z-CHALLENAGE</span>
+            <form action={logout}>
+              <button>
+                <ArrowRightStartOnRectangleIcon className="size-6 text-black" />
+              </button>
+            </form>
           </div>
-          <div>로그인 된 유저</div>
-          <form action={logout}>
-            <button>Log out</button>
-          </form>
+          <div className="pb-4 pl-4 pr-4 pt-6">
+            <TweetList initialTweet={items} />
+            <AddTweetButton />
+          </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-4 px-6 py-8">
-          <div className="flex flex-col gap-2 *:font-medium">
-            <div className="text-8xl font-semibold text-purple-400" href="/create-account">
-              트윗 시작하기!
-            </div>
-            <div className="h-20" />
-            <Link className="text-3xl font-semibold text-purple-400" href="/create-account">
-              회원가입
-            </Link>
-            <Link className="text-3xl font-semibold text-purple-400" href="/log-in">
-              로그인
-            </Link>
-          </div>
-        </div>
+        <RootLogin />
       )}
     </div>
   )
